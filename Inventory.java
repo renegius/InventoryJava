@@ -1,9 +1,14 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Inventory {
-    private Map<String, Product> products = new HashMap<>();
-    private List<Sale> sales = new ArrayList<>();
-    private List<Order> orders = new ArrayList<>();
+    private final Map<String, Product> products = new HashMap<>();
+    private final List<Sale> sales = new ArrayList<>();
+    private final List<Order> orders = new ArrayList<>();
 
     public void addProduct(Product product) {
         products.put(product.getName(), product);
@@ -17,9 +22,8 @@ public class Inventory {
         Product p = sale.getProduct();
         if (p.reduceQuantity(sale.getQuantity())) {
             sales.add(sale);
-            System.out.println("Sale processed: " + sale.getType());
         } else {
-            System.out.println("Insufficient stock.");
+            throw new IllegalArgumentException("Insufficient stock for " + p.getName());
         }
     }
 
@@ -28,30 +32,20 @@ public class Inventory {
         if (p != null) {
             p.addQuantity(quantity);
             orders.add(new Order(name, quantity, cost));
-            System.out.println("Restocked " + name);
         } else {
-            System.out.println("Product not found.");
+            throw new IllegalArgumentException("Product not found: " + name);
         }
     }
 
-    public void printStockLevels() {
-        System.out.println("Current Stock:");
-        for (Product p : products.values()) {
-            System.out.println(p.getName() + ": " + p.getQuantity() + " units at $" + p.getPrice());
-        }
+    public Collection<Product> getProducts() {
+        return Collections.unmodifiableCollection(products.values());
     }
 
-    public void printSalesSummary() {
-        System.out.println("Sales Summary:");
-        for (Sale s : sales) {
-            System.out.println(s.getType() + " sale - " + s.getProduct().getName() + ": " + s.getQuantity() + " units totaling $" + s.getTotal());
-        }
+    public List<Sale> getSales() {
+        return Collections.unmodifiableList(sales);
     }
 
-    public void printPurchaseHistory() {
-        System.out.println("Purchase History:");
-        for (Order o : orders) {
-            System.out.println(o.getName() + ": " + o.getQuantity() + " units costing $" + o.getCost());
-        }
+    public List<Order> getOrders() {
+        return Collections.unmodifiableList(orders);
     }
 }

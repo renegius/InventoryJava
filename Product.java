@@ -1,6 +1,6 @@
 public class Product extends Item {
     private int quantity;
-    private double price;
+    private final double price;
 
     public Product(String name, int quantity, double price) {
         super(name);

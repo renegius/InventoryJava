@@ -1,6 +1,6 @@
 public abstract class Sale {
-    private Product product;
-    private int quantity;
+    private final Product product;
+    private final int quantity;
 
     public Sale(Product product, int quantity) {
         this.product = product;

@@ -1,6 +1,6 @@
 public class Order extends Item {
-    private int quantity;
-    private double cost;
+    private final int quantity;
+    private final double cost;
 
     public Order(String name, int quantity, double cost) {
         super(name);
